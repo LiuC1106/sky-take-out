@@ -82,12 +82,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employee.setStatus(StatusConstant.ENABLE);
 
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
         employeeMapper.insert(employee);
     }
 
@@ -107,6 +101,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void startOrstop(Integer status, Long id) {
         Employee employee = Employee.builder().status(status).id(id).build();
         employeeMapper.update(employee);
+    }
+
+    @Override
+    public Employee backSelect(Long id) {
+        Employee employee = employeeMapper.backSelect(id);
+        employee.setPassword("******");
+        return employee;
+    }
+
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+
+        employeeMapper.update(employee);
+
     }
 
 }
